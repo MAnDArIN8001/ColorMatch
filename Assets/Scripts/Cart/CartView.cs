@@ -1,18 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CartColorController))]
 public class CartView : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private ParticleSystem _colorChanginParticles;
+
+    private CartColorController _cartColorController;
+
+    private void Awake()
     {
-        
+        _cartColorController = GetComponent<CartColorController>();
+
+        if (_cartColorController is null)
+        {
+            Debug.LogError($"The game object {gameObject} doesnt contains CartColorController component");
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        if (_cartColorController is not null)
+        {
+            _cartColorController.OnColorChanged += HandleColorChangings;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (_cartColorController is not null)
+        {
+            _cartColorController.OnColorChanged -= HandleColorChangings;
+        }
+    }
+
+    private void HandleColorChangings(Color newColor)
+    {
+        var particleMainModule = _colorChanginParticles.main;
+
+        particleMainModule.startColor = newColor;
+
+        GameObject colorChangingsEffec = Instantiate(_colorChanginParticles.gameObject, transform.position, Quaternion.identity);
     }
 }

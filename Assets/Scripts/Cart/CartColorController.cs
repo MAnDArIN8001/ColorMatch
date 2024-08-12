@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 public class CartColorController : MonoBehaviour
 {
@@ -10,15 +11,26 @@ public class CartColorController : MonoBehaviour
     private float _randomChangeTime;
     private float _currentChangeTime;
 
-    [SerializeField] private Color[] _colors;
-
     private Color _currentCollor;
 
+    private ColorConfig _colorConfig;
+
     [SerializeField] private MeshRenderer _modelRenderer;
+
+    public Color CurrentColor => _currentCollor;
+
+    [Inject]
+    private void Initialize(ColorConfig colorConfig)
+    {
+        _colorConfig = colorConfig;
+    }
 
     private void Start()
     {
         ChangeColor();
+
+        _randomChangeTime = UnityEngine.Random.Range(_minChangeTime, _maxChangeTime);
+        _currentChangeTime = _randomChangeTime;
     }
 
     private void FixedUpdate()
@@ -41,12 +53,13 @@ public class CartColorController : MonoBehaviour
         OnColorChanged?.Invoke(newColor);
 
         _modelRenderer.material.color = newColor;
+        _currentCollor = newColor;
     }
 
     private Color GetRandomColor()
     {
-        int randomIndex = UnityEngine.Random.Range(0, _colors.Length);
+        int randomIndex = UnityEngine.Random.Range(0, _colorConfig.Colors.Length);
 
-        return _colors[randomIndex];
+        return _colorConfig.Colors[randomIndex];
     }
 }
