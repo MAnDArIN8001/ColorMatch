@@ -11,13 +11,11 @@ public class CartColorController : MonoBehaviour
     private float _randomChangeTime;
     private float _currentChangeTime;
 
-    private Color _currentCollor;
-
     private ColorConfig _colorConfig;
 
     [SerializeField] private MeshRenderer _modelRenderer;
 
-    public Color CurrentColor => _currentCollor;
+    public Color CurrentColor => _modelRenderer.material.color;
 
     [Inject]
     private void Initialize(ColorConfig colorConfig)
@@ -53,7 +51,6 @@ public class CartColorController : MonoBehaviour
         OnColorChanged?.Invoke(newColor);
 
         _modelRenderer.material.color = newColor;
-        _currentCollor = newColor;
     }
 
     private Color GetRandomColor()

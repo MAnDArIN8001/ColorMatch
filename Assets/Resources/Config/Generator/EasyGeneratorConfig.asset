@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1ac03b386df5248b106b0120435f48, type: 3}
   m_Name: EasyGeneratorConfig
   m_EditorClassIdentifier: 
-  _generationCooldown: 1
+  _generationCooldown: 0.5

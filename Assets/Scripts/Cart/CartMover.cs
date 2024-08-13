@@ -24,7 +24,10 @@ public class CartMover : MonoBehaviour
         {
             Debug.LogError($"The game object {gameObject} doesnt contains Regidbody component");
         }
+    }
 
+    private void Start()
+    {
         transform.position = new Vector2(0, transform.position.y);
     }
 
